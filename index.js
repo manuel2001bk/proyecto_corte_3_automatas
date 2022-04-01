@@ -26,89 +26,89 @@ var entrada = []
 
 var reglas = [{
     'estado': 'S',
-    'regla': ['FINAL','MEDIO','INICIO'],
-    'alfabeto' : '',
-    'final':false
+    'regla': ['FINAL', 'MEDIO', 'INICIO'],
+    'alfabeto': '',
+    'final': false
 }, {
     'estado': 'INICIO',
-    'regla': ['INTO','INSERT'],
-    'alfabeto' : '',
-    'final':false
-},{
+    'regla': ['INTO', 'INSERT'],
+    'alfabeto': '',
+    'final': false
+}, {
     'estado': 'MEDIO',
-    'regla': ['Y','PN'],
-    'alfabeto' : '',
-    'final':false
-},{
+    'regla': ['Y', 'PN'],
+    'alfabeto': '',
+    'final': false
+}, {
     'estado': 'FINAL',
-    'regla': ['VAL','PF'],
-    'alfabeto' : '',
-    'final':false
-},{
+    'regla': ['VAL', 'PF'],
+    'alfabeto': '',
+    'final': false
+}, {
     'estado': 'INSERT',
     'regla': [],
-    'alfabeto' : 'INSERT',
-    'final':true
-},{
+    'alfabeto': 'INSERT',
+    'final': true
+}, {
     'estado': 'INTO',
     'regla': [],
-    'alfabeto' : 'INTO',
-    'final':true
-},{
+    'alfabeto': 'INTO',
+    'final': true
+}, {
     'estado': 'PN',
     'regla': ['L'],
-    'alfabeto' : '',
-    'final':false
-},{
+    'alfabeto': '',
+    'final': false
+}, {
     'estado': 'L',
     'regla': [],
-    'alfabeto' : 'a-zA-Z',
-    'final':true
-},{
+    'alfabeto': 'a-zA-Z',
+    'final': true
+}, {
     'estado': 'Y',
-    'regla': ['PC','VACIO'],
-    'alfabeto' : 'no',
-    'final':true
-},{
+    'regla': ['PC', 'VACIO'],
+    'alfabeto': 'no',
+    'final': true
+}, {
     'estado': 'VACIO',
     'regla': [],
-    'alfabeto' : '',
-    'final':true
-},{
+    'alfabeto': '',
+    'final': true
+}, {
     'estado': 'PC',
-    'regla': ['CP','COL','PI'],
-    'alfabeto' : '',
-    'final':false
-},{
+    'regla': ['CP', 'COL', 'PI'],
+    'alfabeto': '',
+    'final': false
+}, {
     'estado': 'PI',
     'regla': [],
-    'alfabeto' : '(',
-    'final':true
-},{
+    'alfabeto': '(',
+    'final': true
+}, {
     'estado': 'CP',
     'regla': [],
-    'alfabeto' : ')',
-    'final':true
-},{
+    'alfabeto': ')',
+    'final': true
+}, {
     'estado': 'COL',
-    'regla': ['VACIO','PC'],
-    'alfabeto' : 'cadenas',
-    'final':true
-},{
+    'regla': ['VACIO', 'PC'],
+    'alfabeto': 'cadenas',
+    'final': true
+}, {
     'estado': 'PF',
-    'regla': ['VALUES','SET'],
-    'alfabeto' : 'pf',
-    'final':true
-},{
+    'regla': ['VALUES', 'SET'],
+    'alfabeto': 'pf',
+    'final': true
+}, {
     'estado': 'VAL',
-    'regla': ['CP','Z','PI'],
-    'alfabeto' : '',
-    'final':false
-},{
+    'regla': ['CP', 'Z', 'PI'],
+    'alfabeto': '',
+    'final': false
+}, {
     'estado': 'Z',
     'regla': [],
-    'alfabeto' : 'valores',
-    'final':true
+    'alfabeto': 'valores',
+    'final': true
 }
 ]
 
@@ -141,120 +141,123 @@ function getValueInput() {
     }
 }
 
-function evalua_entrada  ()  {
-    console.log("Contenido de la pila",stack.print())
+function evalua_entrada() {
+    console.log("Contenido de la pila", stack.print())
     let apuntador = 0
     let aux
     do {
         aux = stack.pop()
         console.log("Entrada a la evaluacion")
-        console.log("Estado: ",aux.estado)
-        console.log("Final: ",aux.final)
-        if(aux.final){
+        console.log("Estado: ", aux.estado)
+        console.log("Final: ", aux.final)
+        if (aux.final) {
             console.log("Es terminal")
             switch (aux.alfabeto) {
                 case 'a-zA-Z':
-                    if(eval_Cadena(entrada[apuntador])){
+                    if (eval_Cadena(entrada[apuntador])) {
                         console.log("Es correcto")
                         apuntador++
-                    }else{
-                        alert("Cadena no valida")
+                    } else {
+                        alert("Cadena no valida en : " + entrada[apuntador])
                     }
                     break;
                 case 'no':
-                    eval_Cadena_columnas(apuntador,aux)
+                    eval_Cadena_columnas(apuntador, aux)
                     break;
                 case '(':
                     let aux_cad = entrada[apuntador]
                     aux_cad = aux_cad[0]
-                    
+
                     console.log(aux_cad == aux.alfabeto)
                     console.log(aux_cad)
-                    if(aux_cad == aux.alfabeto){
+                    if (aux_cad == aux.alfabeto) {
                         console.log("Cadena correcta")
                     }
-                    else{
-                        alert("Cadena Incorrecta")
+                    else {
+                        alert("Cadena no valida en : " + entrada[apuntador])
                         apuntador = -1
                     }
                     break;
                 case ')':
-                    let aux_cade = entrada[apuntador-1]
-                    aux_cade = aux_cade[aux_cade.length-1]
+                    let aux_cade = entrada[apuntador - 1]
+                    aux_cade = aux_cade[aux_cade.length - 1]
                     console.log(aux_cade)
-                    if(aux_cade == aux.alfabeto){
+                    if (aux_cade == aux.alfabeto) {
                         console.log("Cadena correcta")
                     }
-                    else{
-                        alert("Cadena Incorrecta")
+                    else {
+                        alert("Cadena no valida en : " + entrada[apuntador])
                         apuntador = -1
                     }
                     break;
                 case 'cadenas':
                     let cadena = entrada[apuntador]
-                    if(eval_Cadena_data(cadena.substring(1, cadena.length-1))){
+                    if (eval_Cadena_data(cadena.substring(1, cadena.length - 1))) {
                         apuntador++
-                    }else{
-                        errors(2)
-
+                    } else {
+                        alert("Cadena no valida en : " + entrada[apuntador])
+                        apuntador = -1
                     }
                     break;
                 case 'valores':
                     let valor = entrada[apuntador]
-                    if(eval_Cadena_values(valor.substring(1, valor.length-1))){
+                    if (eval_Cadena_values(valor.substring(1, valor.length - 1))) {
                         console.log("Correcto")
                         apuntador++
-                    }else{
-                        errors(2)
-
+                    } else {
+                        alert("Cadena no valida en : " + entrada[apuntador])
+                        apuntador = -1
                     }
                     break;
                 case 'pf':
-                    if(aux.regla[0] == entrada[apuntador]){
+                    if (aux.regla[0] == entrada[apuntador]) {
                         console.log('Cadena aceptada')
                         apuntador++
                     }
-                    else{
-                        if(aux.regla[1] == entrada[apuntador]){
+                    else {
+                        if (aux.regla[1] == entrada[apuntador]) {
                             console.log('Cadena aceptada')
                             apuntador++
-                        }else{
-                            console.log("Cadena no valida", entrada[apuntador])
+                        } else {
+                            alert("Cadena no valida en : " + entrada[apuntador])
+                            apuntador = -1
                         }
                     }
                     break;
-            
+
                 default:
-                    if(entrada[apuntador] == aux.alfabeto){
+                    if (entrada[apuntador] == aux.alfabeto) {
                         console.log("Es correcto")
                         apuntador++
-                    }else{
-                        
+                    } else {
+                        alert("Cadena no valida en : " + entrada[apuntador])
+                        apuntador = -1
                     }
                     break;
             }
         }
-        else{
-            if(aux.reglas != ''){
+        else {
+            if (aux.reglas != '') {
                 for (const x in aux.regla) {
                     console.log(aux.regla[x])
                     for (let index = 0; index < reglas.length; index++) {
-                        if(reglas[index].estado === aux.regla[x]){
-                            console.log("SE REGISTRO" ,reglas[index])
+                        if (reglas[index].estado === aux.regla[x]) {
+                            console.log("SE REGISTRO", reglas[index])
                             stack.push(reglas[index])
                         }
                     }
                 }
-            }else{
+            } else {
                 alert("Error al intentar buscar las reglas")
+                apuntador = -1
             }
         }
         stack.print()
     } while (stack.size() != 0);
     apuntador++
-    if(stack.size != 0  && apuntador >= entrada.length){
+    if (stack.size != 0 && apuntador >= entrada.length) {
         alert("Cadena aceptada")
-    }else{
+    } else {
         alert("Cadena no valida")
     }
 }
@@ -266,7 +269,7 @@ function desgloce() {
 }
 
 function eval_Cadena(cadena) {
-    let exp_reg = /[a-z A-Z]/
+    let exp_reg = /[a-z A-Z 0-9]/
 
     for (x = 0; x < cadena.length; x++) {
         if (exp_reg.test(cadena[x])) {
@@ -279,19 +282,19 @@ function eval_Cadena(cadena) {
     }
     return true
 }
-function eval_Cadena_columnas(apuntador,aux) {
+function eval_Cadena_columnas(apuntador, aux) {
     let comparador = entrada[apuntador]
     console.log("Palabra a evaluar : ", comparador[0])
-    if(comparador[0] == '('){
+    if (comparador[0] == '(') {
         console.log(aux.regla[0])
         for (let index = 0; index < reglas.length; index++) {
-            if(reglas[index].estado === aux.regla[0]){
-                console.log("SE REGISTRO" ,reglas[index])
+            if (reglas[index].estado === aux.regla[0]) {
+                console.log("SE REGISTRO", reglas[index])
                 stack.push(reglas[index])
             }
         }
         return true
-    }else{
+    } else {
         console.log("Correcto vacio")
         console.log("Siguente comparacion")
         return false
@@ -300,31 +303,31 @@ function eval_Cadena_columnas(apuntador,aux) {
 
 function eval_Cadena_data(cadena) {
     cadena = cadena.split(',')
-    console.log("Columnas : " ,cadena)
+    console.log("Columnas : ", cadena)
     for (const key in cadena) {
-        if(eval_Cadena(cadena[key])){
+        if (eval_Cadena(cadena[key])) {
             console.log("Columna correcta")
-        }else{
+        } else {
             console.log("Columnas in correctas")
             return false
         }
     }
     return true
-    
+
 }
 function eval_Cadena_values(cadena) {
     cadena = cadena.split(',')
-    console.log("Columnas : " ,cadena)
+    console.log("Columnas : ", cadena)
     for (const key in cadena) {
-        if(eval_Cadena(cadena[key].substring(1,cadena[key].length-1))){
+        if (eval_Cadena(cadena[key].substring(1, cadena[key].length - 1))) {
             console.log("Columna correcta")
-        }else{
+        } else {
             console.log("Columnas in correctas")
             return false
         }
     }
     return true
-    
+
 }
 
 function verificar() {
